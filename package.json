@@ -1,0 +1,26 @@
+{
+  "name": "@buttercup/dropbox-client",
+  "version": "0.1.0",
+  "description": "Dropbox client library",
+  "main": "source/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buttercup/dropbox-client.git"
+  },
+  "keywords": [
+    "dropbox",
+    "client"
+  ],
+  "author": "Perry Mitchell <perry@perrymitchell.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buttercup/dropbox-client/issues"
+  },
+  "homepage": "https://github.com/buttercup/dropbox-client#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
