@@ -5,6 +5,23 @@ const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
 const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
+function downloadFile(filename, token) {
+    const config = {
+        method: "POST",
+        url: DOWNLOAD_URL,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "text/plain",
+            "Dropbox-API-Arg": JSON.stringify({
+                path: filename
+            })
+        }
+    };
+    return axios(config)
+        .then(handleResponse)
+        .then(response => response.data);
+}
+
 function getDirectoryContents(dirPath, token) {
     const path = dirPath === "/" ? "" : dirPath;
     const config = {
@@ -39,7 +56,7 @@ function handleResponse(response) {
     return response;
 }
 
-getDirectoryContents("/Personal", "").then(contents => {
+downloadFile("/Personal/project_codenames.txt", "").then(contents => {
     console.log("C", contents);
 }).catch(err => {
     console.error(err);
