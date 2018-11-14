@@ -79,3 +79,9 @@ function putFileContents(filename, data, token) {
         .then(handleResponse)
         .then(() => {})
 }
+
+module.exports = {
+    getDirectoryContents,
+    getFileContents,
+    putFileContents
+};
