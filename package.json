@@ -4,6 +4,7 @@
   "description": "Dropbox client library",
   "main": "source/index.js",
   "scripts": {
+    "docs": "jsdoc2md source/**/*.js > API.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "homepage": "https://github.com/buttercup/dropbox-client#readme",
   "dependencies": {
     "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^4.0.1"
   }
 }

@@ -1,3 +1,7 @@
+/**
+ * @typedef {Object} DirectoryResult
+ */
+
 function convertDirectoryResult(item) {
     const dropboxType = item[".tag"];
     if (/^(file|folder)$/.test(dropboxType) !== true) {
