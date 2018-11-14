@@ -7,7 +7,8 @@ function convertDirectoryResult(item) {
     return {
         name: item.name,
         path: item.path_display,
-        type
+        type,
+        id: item.id
     };
 }
 
