@@ -49,7 +49,7 @@ function getFileContents(filename, token, patcher) {
 }
 
 function handleResponse(response) {
-    if (response.status < 200 || response.status >= 300) {
+    if (!response.status || response.status < 200 || response.status >= 300) {
         throw new Error(`Invalid response: ${response.status} ${response.statusText}`);
     }
     return response;
