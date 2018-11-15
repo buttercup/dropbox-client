@@ -207,5 +207,43 @@ describe("DropboxClient", function() {
                 });
             });
         });
+
+        describe("readFile", function() {
+            beforeEach(function() {
+                this.context.returnValue = {
+                    status: 200,
+                    data: "file-contents"
+                };
+            });
+
+            it("returns the correct contents", function(done) {
+                this.fs.readFile("/test.txt", (err, contents) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    expect(contents).to.equal("file-contents");
+                    done();
+                });
+            });
+        });
+
+        describe("writeFile", function() {
+            beforeEach(function() {
+                this.context.returnValue = {
+                    status: 200
+                };
+            });
+
+            it("returns the correct contents", function(done) {
+                this.fs.writeFile("/test.txt", "test-content", err => {
+                    if (err) {
+                        return done(err);
+                    }
+                    const arg = this.request.firstCall.args[0];
+                    expect(arg).to.have.property("data", "test-content");
+                    done();
+                });
+            });
+        });
     });
 });
