@@ -32,12 +32,25 @@ function createFsInterface(adapter) {
                 })
                 .catch(cb);
         },
-        readFile: (remotePath, options = { encoding: null }, callback) => {
+        readFile: (remotePath, options = {}, callback) => {
             let cb = callback;
             if (typeof options === "function") {
                 cb = options;
             }
-
+            adapter
+                .getFileContents(remotePath)
+                .then(content => cb(null, content))
+                .catch(cb);
+        },
+        writeFile: (remotePath, data, options = {}, callback) => {
+            let cb = callback;
+            if (typeof options === "function") {
+                cb = options;
+            }
+            adapter
+                .putFileContents(remotePath, data)
+                .then(() => cb())
+                .catch(cb);
         }
     };
 }
