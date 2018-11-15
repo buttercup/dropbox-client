@@ -1,11 +1,10 @@
-const axios = require("axios");
 const { convertDirectoryResult } = require("./convert.js");
 
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
 const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
-function getDirectoryContents(dirPath, token) {
+function getDirectoryContents(dirPath, token, patcher) {
     const path = dirPath === "/" ? "" : dirPath;
     const config = {
         method: "POST",
@@ -24,7 +23,7 @@ function getDirectoryContents(dirPath, token) {
             include_mounted_folders: true
         }
     };
-    return axios(config)
+    return patcher.execute("request", config)
         .then(handleResponse)
         .then(response => {
             const { entries } = response.data;
@@ -32,7 +31,7 @@ function getDirectoryContents(dirPath, token) {
         });
 }
 
-function getFileContents(filename, token) {
+function getFileContents(filename, token, patcher) {
     const config = {
         method: "POST",
         url: DOWNLOAD_URL,
@@ -44,19 +43,19 @@ function getFileContents(filename, token) {
             })
         }
     };
-    return axios(config)
+    return patcher.execute("request", config)
         .then(handleResponse)
         .then(response => response.data);
 }
 
 function handleResponse(response) {
-    if (response.status < 200 || response.status >= 300) {
+    if (!response.status || response.status < 200 || response.status >= 300) {
         throw new Error(`Invalid response: ${response.status} ${response.statusText}`);
     }
     return response;
 }
 
-function putFileContents(filename, data, token) {
+function putFileContents(filename, data, token, patcher) {
     const config = {
         method: "POST",
         url: UPLOAD_URL,
@@ -75,7 +74,7 @@ function putFileContents(filename, data, token) {
         },
         data
     };
-    return axios(config)
+    return patcher.execute("request", config)
         .then(handleResponse)
         .then(() => {})
 }
