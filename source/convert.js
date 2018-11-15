@@ -12,7 +12,8 @@ function convertDirectoryResult(item) {
         name: item.name,
         path: item.path_display,
         type,
-        id: item.id
+        id: item.id,
+        size: item.size || 0
     };
 }
 

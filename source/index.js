@@ -1,4 +1,5 @@
 const { getDirectoryContents, getFileContents, putFileContents } = require("./requests.js");
+const { createFsInterface } = require("./fs.js");
 
 /**
  * Create a new Dropbox client adapter using a token
@@ -37,5 +38,6 @@ function createClient(token) {
 };
 
 module.exports = {
-    createClient
+    createClient,
+    createFsInterface
 };
