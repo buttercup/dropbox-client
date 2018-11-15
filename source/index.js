@@ -1,3 +1,5 @@
+const HotPatcher = require("hot-patcher");
+const axios = require("axios");
 const { getDirectoryContents, getFileContents, putFileContents } = require("./requests.js");
 const { createFsInterface } = require("./fs.js");
 
@@ -7,17 +9,24 @@ const { createFsInterface } = require("./fs.js");
  * @returns {DropboxClientAdapter}
  */
 function createClient(token) {
+    const patcher = new HotPatcher();
+    patcher.patch("request", axios);
     /**
      * @class DropboxClientAdapter
      */
     return {
+        /**
+         * @type {HotPatcher}
+         * @memberof DropboxClientAdapter
+         */
+        patcher,
         /**
          * Get the directory contents of a remote path
          * @param {String} path The remote path
          * @returns {Promise.<Array.<DirectoryResult>>} A promise that resolves with directory results
          * @memberof DropboxClientAdapter
          */
-        getDirectoryContents: path => getDirectoryContents(path, token),
+        getDirectoryContents: path => getDirectoryContents(path, token, patcher),
         /**
          * Get the contents of a remote file
          * @param {String} path The remote path
@@ -25,7 +34,7 @@ function createClient(token) {
          *  file
          * @memberof DropboxClientAdapter
          */
-        getFileContents: path => getFileContents(path, token),
+        getFileContents: path => getFileContents(path, token, patcher),
         /**
          * Put contents to a remote file
          * @param {String} path The remote path to write to
@@ -33,7 +42,7 @@ function createClient(token) {
          * @returns {Promise} A promise that resolves when writing has been completed
          * @memberof DropboxClientAdapter
          */
-        putFileContents: (path, data) => putFileContents(path, data, token)
+        putFileContents: (path, data) => putFileContents(path, data, token, patcher)
     };
 };
 

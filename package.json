@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/buttercup/dropbox-client#readme",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "hot-patcher": "^0.5.0"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1"
