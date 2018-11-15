@@ -42,3 +42,20 @@ client
 ```
 
 You can also read and write files using `getFileContents` and `putFileContents`, respectively. Check out the [API documentation](API.md) for more information.
+
+### Fs
+
+An `fs`-like interface is also available:
+
+```javascript
+const { createClient, createFsInterface } = require("@buttercup/dropbox-client");
+
+const client = createClient("my-token");
+const dfs = createFsInterface(client);
+
+dfs.readdir("/photos", (err, items) => {
+    // array of file names
+});
+```
+
+Read the [fs API documentation](API.md#DropboxClientFsAdapter) for more information on the available methods.
