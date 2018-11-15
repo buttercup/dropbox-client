@@ -22,9 +22,9 @@ function createFsInterface(adapter) {
                     if (/^(node|stat)$/.test(mode) === false) {
                         throw new Error(`Invalid mode: ${mode}`);
                     }
-                    callback(null, items.map(item => mode === "node"
-                        ? item => item.name
-                        : item => Object.assign(item, {
+                    cb(null, items.map(item => mode === "node"
+                        ? item.name
+                        : Object.assign(item, {
                             isFile: () => item.type === "file",
                             isDirectory: () => item.type === "directory"
                         })
