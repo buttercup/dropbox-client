@@ -16,6 +16,12 @@ function createClient(token) {
      */
     return {
         /**
+         * @type {Function}
+         * @memberof DropboxClientAdapter
+         * @see https://github.com/axios/axios
+         */
+        axios,
+        /**
          * @type {HotPatcher}
          * @memberof DropboxClientAdapter
          */
