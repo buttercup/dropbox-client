@@ -1,6 +1,8 @@
 # Dropbox Client
 > Dropbox client library for Buttercup
 
+[![Build Status](https://travis-ci.org/buttercup/dropbox-client.svg?branch=master)](https://travis-ci.org/buttercup/dropbox-client)
+
 ## About
 
 Dropbox is an integral part of the Buttercup platform as it's used by a huge amount of users to store all kinds of data - including Buttercup vault files. Having a functional, portable and reliable Dropbox client interface is critical to the platform's stability, and currently the official Dropbox SDK is lacking in terms of quality and stability.
