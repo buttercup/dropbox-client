@@ -13,7 +13,7 @@ function getDirectoryContents(dirPath, token, patcher) {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        data: {
+        body: {
             path,
             recursive: false,
             limit: 2000,
@@ -24,7 +24,6 @@ function getDirectoryContents(dirPath, token, patcher) {
         }
     };
     return patcher.execute("request", config)
-        .then(handleResponse)
         .then(response => {
             const { entries } = response.data;
             return entries.map(convertDirectoryResult);
@@ -44,22 +43,14 @@ function getFileContents(filename, token, patcher) {
         }
     };
     return patcher.execute("request", config)
-        .then(handleResponse)
         .then(response => response.data);
-}
-
-function handleResponse(response) {
-    if (!response.status || response.status < 200 || response.status >= 300) {
-        throw new Error(`Invalid response: ${response.status} ${response.statusText}`);
-    }
-    return response;
 }
 
 function putFileContents(filename, data, token, patcher) {
     const config = {
         method: "POST",
         url: UPLOAD_URL,
-        params: {
+        query: {
             arg: JSON.stringify({
                 path: filename,
                 mode: "overwrite"
@@ -72,10 +63,9 @@ function putFileContents(filename, data, token, patcher) {
                 ? "text/plain; charset=dropbox-cors-hack"
                 : "application/octet-stream"
         },
-        data
+        body: data
     };
     return patcher.execute("request", config)
-        .then(handleResponse)
         .then(() => {})
 }
 
