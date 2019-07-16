@@ -7,7 +7,7 @@
 
 Dropbox is an integral part of the Buttercup platform as it's used by a huge amount of users to store all kinds of data - including Buttercup vault files. Having a functional, portable and reliable Dropbox client interface is critical to the platform's stability, and currently the official Dropbox SDK is lacking in terms of quality and stability.
 
-This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses [axios](https://github.com/axios/axios) to perform requests, which has been proven to be a stable cross-platform library perfect for this purpose.
+This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses [cowl](https://github.com/perry-mitchell/cowl) to perform requests, which is designed to work similarly across multiple platforms.
 
 ## Installation
 
