@@ -99,9 +99,9 @@ describe("DropboxClient", function() {
             it("sends correct parameters", function() {
                 return this.client.putFileContents("/file.txt", "testing").then(() => {
                     const arg = this.request.firstCall.args[0];
-                    expect(arg).to.have.nested.property("params.arg").that.is.a("string");
-                    expect(arg).to.have.nested.property("params.reject_cors_preflight", "true");
-                    const payload = JSON.parse(arg.params.arg);
+                    expect(arg).to.have.nested.property("query.arg").that.is.a("string");
+                    expect(arg).to.have.nested.property("query.reject_cors_preflight", "true");
+                    const payload = JSON.parse(arg.query.arg);
                     expect(payload).to.deep.equal({
                         path: "/file.txt",
                         mode: "overwrite"
@@ -112,7 +112,7 @@ describe("DropboxClient", function() {
             it("sends correct authorisation", function() {
                 return this.client.putFileContents("/file.txt", "testing").then(() => {
                     const arg = this.request.firstCall.args[0];
-                    expect(arg).to.have.nested.property("params.authorization", `Bearer ${FAKE_TOKEN}`);
+                    expect(arg).to.have.nested.property("query.authorization", `Bearer ${FAKE_TOKEN}`);
                     expect(arg.headers).to.not.have.property("Authorization");
                 });
             });
@@ -120,7 +120,7 @@ describe("DropboxClient", function() {
             it("sends content", function() {
                 return this.client.putFileContents("/file.txt", "testing").then(() => {
                     const arg = this.request.firstCall.args[0];
-                    expect(arg).to.have.property("data", "testing");
+                    expect(arg).to.have.property("body", "testing");
                 });
             });
         });
@@ -240,7 +240,7 @@ describe("DropboxClient", function() {
                         return done(err);
                     }
                     const arg = this.request.firstCall.args[0];
-                    expect(arg).to.have.property("data", "test-content");
+                    expect(arg).to.have.property("body", "test-content");
                     done();
                 });
             });
