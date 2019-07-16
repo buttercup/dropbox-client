@@ -1,5 +1,5 @@
 const HotPatcher = require("hot-patcher");
-const axios = require("axios");
+const { request } = require("cowl");
 const { getDirectoryContents, getFileContents, putFileContents } = require("./requests.js");
 const { createFsInterface } = require("./fs.js");
 
@@ -10,7 +10,7 @@ const { createFsInterface } = require("./fs.js");
  */
 function createClient(token) {
     const patcher = new HotPatcher();
-    patcher.patch("request", axios);
+    patcher.patch("request", request);
     /**
      * @class DropboxClientAdapter
      */
@@ -18,9 +18,9 @@ function createClient(token) {
         /**
          * @type {Function}
          * @memberof DropboxClientAdapter
-         * @see https://github.com/axios/axios
+         * @see https://github.com/perry-mitchell/cowl
          */
-        axios,
+        request,
         /**
          * @type {HotPatcher}
          * @memberof DropboxClientAdapter
