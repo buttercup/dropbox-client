@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v0.2.1
+_2019-07-17_
+
+ * **Bugfix**:
+   * Fix `URL` usage for `query` option in browser environments
+
 ## v0.2.0
 _2019-07-16_
 
