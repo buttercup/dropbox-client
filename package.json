@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/buttercup/dropbox-client#readme",
   "dependencies": {
-    "cowl": "^0.3.2",
+    "cowl": "^0.4.0",
     "hot-patcher": "^0.5.0"
   },
   "devDependencies": {
