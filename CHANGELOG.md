@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.3.1
+_2019-07-22_
+
+ * Upgrade `cowl` for better browser compatibility
+
 ## v0.3.0
 _2019-07-19_
 
