@@ -1,7 +1,7 @@
 # Dropbox Client
 > Dropbox client library for Buttercup
 
-[![Build Status](https://travis-ci.org/buttercup/dropbox-client.svg?branch=master)](https://travis-ci.org/buttercup/dropbox-client)
+[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/%40buttercup%2Fdropbox-client.svg)](https://www.npmjs.com/package/@buttercup/dropbox-client) [![Build Status](https://travis-ci.org/buttercup/dropbox-client.svg?branch=master)](https://travis-ci.org/buttercup/dropbox-client)
 
 ## About
 
