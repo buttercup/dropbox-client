@@ -59,9 +59,7 @@ function putFileContents(filename, data, token, patcher) {
             reject_cors_preflight: "true"
         },
         headers: {
-            "Content-Type": typeof data === "string"
-                ? "text/plain; charset=dropbox-cors-hack"
-                : "application/octet-stream"
+            "Content-Type": "application/octet-stream"
         },
         body: data
     };
