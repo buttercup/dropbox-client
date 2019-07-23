@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.3.2
+_2019-07-23_
+
+ * Set `Content-Type` header to `application/octet-stream` only for PUT requests
+
 ## v0.3.1
 _2019-07-22_
 
