@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v0.3.3
+_2019-09-15_
+
+ * **Bugfix**:
+   * ([#3](https://github.com/buttercup/dropbox-client/issues/3)) Unicode files would throw an error when using `getFileContents`
+
 ## v0.3.2
 _2019-07-23_
 
