@@ -1,4 +1,4 @@
-const { convertDirectoryResult } = require("./convert.js");
+const { convertDirectoryResult, urlSafeJSONStringify } = require("./convert.js");
 
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
 const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
@@ -37,7 +37,7 @@ function getFileContents(filename, token, patcher) {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "text/plain",
-            "Dropbox-API-Arg": JSON.stringify({
+            "Dropbox-API-Arg": urlSafeJSONStringify({
                 path: filename
             })
         }

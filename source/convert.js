@@ -36,6 +36,15 @@ function convertDirectoryResult(item) {
     };
 }
 
+function urlSafeJSONStringify(obj) {
+    const encodeRange = /[\u007f-\uffff]/g;
+    return JSON.stringify(obj).replace(encodeRange, char => {
+        const encoded = `000${char.charCodeAt(0).toString(16)}`.slice(-4);
+        return `\\u${encoded}`;
+    });
+}
+
 module.exports = {
-    convertDirectoryResult
+    convertDirectoryResult,
+    urlSafeJSONStringify
 };
