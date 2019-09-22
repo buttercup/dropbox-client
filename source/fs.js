@@ -73,6 +73,17 @@ function createFsInterface(adapter) {
                 .putFileContents(remotePath, data)
                 .then(() => cb())
                 .catch(cb);
+        },
+
+        /**
+         * Delete a remote file
+         * @param {String} remotePath The remote file path
+         * @param {Function} callback The callback to execute, possibly with an error
+         * @memberof DropboxClientFsAdapter
+         */
+        unlink: (remotePath, callback) => {
+            adapter.deleteFile(remotePath)
+                .then(callback, callback);
         }
     };
 }

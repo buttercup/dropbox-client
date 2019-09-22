@@ -1,6 +1,6 @@
 const HotPatcher = require("hot-patcher");
 const { request } = require("cowl");
-const { getDirectoryContents, getFileContents, putFileContents } = require("./requests.js");
+const { deleteFile, getDirectoryContents, getFileContents, putFileContents } = require("./requests.js");
 const { createFsInterface } = require("./fs.js");
 
 /**
@@ -26,6 +26,13 @@ function createClient(token) {
          * @memberof DropboxClientAdapter
          */
         patcher,
+        /**
+         * Delete a remote file
+         * @param {String} path The file path
+         * @returns {Promise}
+         * @memberof DropboxClientAdapter
+         */
+        deleteFile: path => deleteFile(path, token, patcher),
         /**
          * Get the directory contents of a remote path
          * @param {String} path The remote path
