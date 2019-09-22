@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v0.4.0
+_2019-09-22_
+
+ * `deleteFile` method
+ * `unlink` fs method
+
 ## v0.3.3
 _2019-09-15_
 

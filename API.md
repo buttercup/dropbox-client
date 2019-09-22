@@ -10,6 +10,9 @@
 ## Functions
 
 <dl>
+<dt><a href="#convertDirectoryResult">convertDirectoryResult(item)</a> ⇒ <code><a href="#DirectoryResult">DirectoryResult</a></code></dt>
+<dd><p>Convert a Dropbox result item to a common format</p>
+</dd>
 <dt><a href="#createFsInterface">createFsInterface(adapter)</a> ⇒ <code><a href="#DropboxClientFsAdapter">DropboxClientFsAdapter</a></code></dt>
 <dd><p>Create an fs-like adapter from a base adapter instance</p>
 </dd>
@@ -23,6 +26,8 @@
 <dl>
 <dt><a href="#DirectoryResult">DirectoryResult</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#DropboxItemResult">DropboxItemResult</a> : <code>Object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="DropboxClientFsAdapter"></a>
@@ -34,6 +39,7 @@
     * [.readdir(remotePath, [options], callback)](#DropboxClientFsAdapter.readdir)
     * [.readFile(remotePath, [options], callback)](#DropboxClientFsAdapter.readFile)
     * [.writeFile(remotePath, data, [options], callback)](#DropboxClientFsAdapter.writeFile)
+    * [.unlink(remotePath, callback)](#DropboxClientFsAdapter.unlink)
 
 <a name="DropboxClientFsAdapter.readdir"></a>
 
@@ -75,27 +81,51 @@ Write to a remote file
 | [options] | <code>Object</code> | (Not in use) |
 | callback | <code>function</code> | The callback to execute, possibly with an error |
 
+<a name="DropboxClientFsAdapter.unlink"></a>
+
+### DropboxClientFsAdapter.unlink(remotePath, callback)
+Delete a remote file
+
+**Kind**: static method of [<code>DropboxClientFsAdapter</code>](#DropboxClientFsAdapter)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| remotePath | <code>String</code> | The remote file path |
+| callback | <code>function</code> | The callback to execute, possibly with an error |
+
 <a name="DropboxClientAdapter"></a>
 
 ## DropboxClientAdapter
 **Kind**: global class  
 
 * [DropboxClientAdapter](#DropboxClientAdapter)
-    * [.axios](#DropboxClientAdapter.axios) : <code>function</code>
+    * [.request](#DropboxClientAdapter.request) : <code>function</code>
     * [.patcher](#DropboxClientAdapter.patcher) : <code>HotPatcher</code>
+    * [.deleteFile(path)](#DropboxClientAdapter.deleteFile) ⇒ <code>Promise</code>
     * [.getDirectoryContents(path)](#DropboxClientAdapter.getDirectoryContents) ⇒ <code>Promise.&lt;Array.&lt;DirectoryResult&gt;&gt;</code>
     * [.getFileContents(path)](#DropboxClientAdapter.getFileContents) ⇒ <code>Promise.&lt;String&gt;</code>
     * [.putFileContents(path, data)](#DropboxClientAdapter.putFileContents) ⇒ <code>Promise</code>
 
-<a name="DropboxClientAdapter.axios"></a>
+<a name="DropboxClientAdapter.request"></a>
 
-### DropboxClientAdapter.axios : <code>function</code>
+### DropboxClientAdapter.request : <code>function</code>
 **Kind**: static property of [<code>DropboxClientAdapter</code>](#DropboxClientAdapter)  
-**See**: https://github.com/axios/axios  
+**See**: https://github.com/perry-mitchell/cowl  
 <a name="DropboxClientAdapter.patcher"></a>
 
 ### DropboxClientAdapter.patcher : <code>HotPatcher</code>
 **Kind**: static property of [<code>DropboxClientAdapter</code>](#DropboxClientAdapter)  
+<a name="DropboxClientAdapter.deleteFile"></a>
+
+### DropboxClientAdapter.deleteFile(path) ⇒ <code>Promise</code>
+Delete a remote file
+
+**Kind**: static method of [<code>DropboxClientAdapter</code>](#DropboxClientAdapter)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>String</code> | The file path |
+
 <a name="DropboxClientAdapter.getDirectoryContents"></a>
 
 ### DropboxClientAdapter.getDirectoryContents(path) ⇒ <code>Promise.&lt;Array.&lt;DirectoryResult&gt;&gt;</code>
@@ -134,6 +164,17 @@ Put contents to a remote file
 | path | <code>String</code> | The remote path to write to |
 | data | <code>String</code> \| <code>Buffer</code> | The file data to write |
 
+<a name="convertDirectoryResult"></a>
+
+## convertDirectoryResult(item) ⇒ [<code>DirectoryResult</code>](#DirectoryResult)
+Convert a Dropbox result item to a common format
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| item | [<code>DropboxItemResult</code>](#DropboxItemResult) | 
+
 <a name="createFsInterface"></a>
 
 ## createFsInterface(adapter) ⇒ [<code>DropboxClientFsAdapter</code>](#DropboxClientFsAdapter)
@@ -161,3 +202,27 @@ Create a new Dropbox client adapter using a token
 
 ## DirectoryResult : <code>Object</code>
 **Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The file name |
+| path | <code>String</code> | The parent path of the item |
+| type | <code>String</code> | Either "file" or "directory" |
+| id | <code>String</code> | The Dropbox item ID |
+| size | <code>Number</code> | The size of the item |
+
+<a name="DropboxItemResult"></a>
+
+## DropboxItemResult : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | Item name |
+| path_display | <code>String</code> | Item containing path |
+| ".tag" | <code>String</code> | The item type |
+| id | <code>String</code> | The Dropbox item ID |
+| size | <code>Number</code> | The item size |
+
