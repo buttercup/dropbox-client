@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.5.0
+_2020-08-29_
+
+ * Upgrade `cowl` - remove `buffer` dependency
+
 ## v0.4.0
 _2019-09-22_
 
