@@ -1,4 +1,4 @@
-const { createClient, createFsInterface } = require("../../source/index.js");
+const { createClient, createFsInterface, generateAuthorisationURL } = require("../../source/index.js");
 
 const FAKE_TOKEN = "abc123";
 
@@ -244,6 +244,19 @@ describe("DropboxClient", function() {
                     done();
                 });
             });
+        });
+    });
+
+    describe("generateAuthorisationURL", function() {
+        it("includes the client ID", function() {
+            const url = generateAuthorisationURL("abc123", "https://buttercup.pw");
+            expect(url).to.match(/abc123/);
+        });
+
+        it("includes the redirect URL", function() {
+            const url = generateAuthorisationURL("abc123", "https://buttercup.pw");
+            expect(url).to.contain(encodeURIComponent("https://buttercup.pw"));
+            console.log(url);
         });
     });
 });
