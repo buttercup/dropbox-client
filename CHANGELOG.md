@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.6.0
+_2021-11-01_
+
+ * `generateAuthorisationURL` helper
+
 ## v0.5.0
 _2020-08-29_
 
