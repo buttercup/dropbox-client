@@ -15,6 +15,19 @@ Simply run `npm install @buttercup/dropbox-client --save` to install.
 
 ## Usage
 
+### Authorisation
+
+You can generate Dropbox authorisation URLs by using `generateAuthorisationURL`:
+
+```javascript
+const { generateAuthorisationURL } = require("@buttercup/dropbox-client");
+
+const url = generateAuthorisationURL("client-id", "https://redir.example.com");
+// open `url`
+```
+
+### Client
+
 Use the `createClient` method to create a client interface:
 
 ```javascript
