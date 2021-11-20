@@ -2,8 +2,26 @@ const { convertDirectoryResult, urlSafeJSONStringify } = require("./convert.js")
 
 const DELETE_URL = "https://api.dropboxapi.com/2/files/delete_v2";
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
+const DIRECTORY_CREATE_URL = "https://api.dropboxapi.com/2/files/create_folder_v2";
 const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
+
+function createDirectory(directory, token, patcher) {
+    const config = {
+        method: "POST",
+        url: DIRECTORY_CREATE_URL,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: {
+            path: directory,
+            autorename: false
+        }
+    };
+    return patcher.execute("request", config)
+        .then(() => {});
+}
 
 function deleteFile(filename, token, patcher) {
     const config = {
@@ -85,6 +103,7 @@ function putFileContents(filename, data, token, patcher) {
 }
 
 module.exports = {
+    createDirectory,
     deleteFile,
     getDirectoryContents,
     getFileContents,

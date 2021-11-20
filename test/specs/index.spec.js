@@ -13,6 +13,24 @@ describe("DropboxClient", function() {
             this.client.patcher.patch("request", this.request);
         });
 
+        describe("createDirectory", function() {
+            beforeEach(function() {
+                this.context.returnValue = {
+                    status: 200,
+                    data: {}
+                };
+            });
+
+            it("makes the correct request", function() {
+                return this.client.createDirectory("/Sub/Two/Three").then(() => {
+                    expect(this.request.firstCall.args[0]).to.have.nested.property("body.path", "/Sub/Two/Three");
+                    expect(this.request.firstCall.args[0]).to.have.nested.property("url").that.matches(
+                        /\/create_folder_v2$/
+                    );
+                });
+            });
+        });
+
         describe("getDirectoryContents", function() {
             beforeEach(function() {
                 this.context.returnValue = {
@@ -256,7 +274,6 @@ describe("DropboxClient", function() {
         it("includes the redirect URL", function() {
             const url = generateAuthorisationURL("abc123", "https://buttercup.pw");
             expect(url).to.contain(encodeURIComponent("https://buttercup.pw"));
-            console.log(url);
         });
     });
 });

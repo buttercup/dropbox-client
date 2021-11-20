@@ -9,6 +9,24 @@ function createFsInterface(adapter) {
      */
     return {
         /**
+         * Make a new directory
+         * @param {String} remotePath The remote path to create
+         * @param {Function=} optionsOrCallback Callback (options not supported)
+         * @param {Function=} callback
+         * @memberof DropboxClientFsAdapter
+         */
+        mkdir: (remotePath, optionsOrCallback, callback) => {
+            let cb = optionsOrCallback;
+            if (typeof optionsOrCallback !== "function") {
+                cb = callback;
+                console.warn("Options not supported for Dropbox mkdir");
+            }
+            adapter
+                .createDirectory(remotePath)
+                .then(() => callback(null))
+                .catch(callback);
+        },
+        /**
          * Read the contents of a directory
          * @param {String} remotePath The remote directory
          * @param {Object=} options (Not in use)
