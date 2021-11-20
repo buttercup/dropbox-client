@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.7.0
+_2021-11-20_
+
+ * `createDirectory` method
+
 ## v0.6.0
 _2021-11-01_
 

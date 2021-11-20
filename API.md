@@ -41,6 +41,7 @@
 * [DropboxClientAdapter](#DropboxClientAdapter)
     * [.request](#DropboxClientAdapter.request) : <code>function</code>
     * [.patcher](#DropboxClientAdapter.patcher) : <code>HotPatcher</code>
+    * [.createDirectory(path)](#DropboxClientAdapter.createDirectory) ⇒ <code>Promise</code>
     * [.deleteFile(path)](#DropboxClientAdapter.deleteFile) ⇒ <code>Promise</code>
     * [.getDirectoryContents(path)](#DropboxClientAdapter.getDirectoryContents) ⇒ <code>Promise.&lt;Array.&lt;DirectoryResult&gt;&gt;</code>
     * [.getFileContents(path)](#DropboxClientAdapter.getFileContents) ⇒ <code>Promise.&lt;String&gt;</code>
@@ -55,6 +56,17 @@
 
 ### DropboxClientAdapter.patcher : <code>HotPatcher</code>
 **Kind**: static property of [<code>DropboxClientAdapter</code>](#DropboxClientAdapter)  
+<a name="DropboxClientAdapter.createDirectory"></a>
+
+### DropboxClientAdapter.createDirectory(path) ⇒ <code>Promise</code>
+Create a new remote directory
+
+**Kind**: static method of [<code>DropboxClientAdapter</code>](#DropboxClientAdapter)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>String</code> | The remote path to create |
+
 <a name="DropboxClientAdapter.deleteFile"></a>
 
 ### DropboxClientAdapter.deleteFile(path) ⇒ <code>Promise</code>
@@ -110,10 +122,24 @@ Put contents to a remote file
 **Kind**: global class  
 
 * [DropboxClientFsAdapter](#DropboxClientFsAdapter)
+    * [.mkdir(remotePath, [optionsOrCallback], [callback])](#DropboxClientFsAdapter.mkdir)
     * [.readdir(remotePath, [options], callback)](#DropboxClientFsAdapter.readdir)
     * [.readFile(remotePath, [options], callback)](#DropboxClientFsAdapter.readFile)
     * [.writeFile(remotePath, data, [options], callback)](#DropboxClientFsAdapter.writeFile)
     * [.unlink(remotePath, callback)](#DropboxClientFsAdapter.unlink)
+
+<a name="DropboxClientFsAdapter.mkdir"></a>
+
+### DropboxClientFsAdapter.mkdir(remotePath, [optionsOrCallback], [callback])
+Make a new directory
+
+**Kind**: static method of [<code>DropboxClientFsAdapter</code>](#DropboxClientFsAdapter)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| remotePath | <code>String</code> | The remote path to create |
+| [optionsOrCallback] | <code>function</code> | Callback (options not supported) |
+| [callback] | <code>function</code> |  |
 
 <a name="DropboxClientFsAdapter.readdir"></a>
 
