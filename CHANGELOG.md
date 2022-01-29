@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v0.7.1
+_2022-01-29_
+
+ * **Bugfix**:
+   * `cowl`: Handle `null` response headers in request error
+
 ## v0.7.0
 _2021-11-20_
 
