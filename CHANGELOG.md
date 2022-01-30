@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.7.3
+_2022-01-30_
+
+ * `cowl` upgrade for `Layerr` info pass-through
+
 ## v0.7.2
 _2022-01-30_
 
