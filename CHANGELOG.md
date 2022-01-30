@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v0.7.2
+_2022-01-30_
+
+ * **Bugfix**:
+   * Revert `is-in-browser` for `cowl`
+
 ## v0.7.1
 _2022-01-29_
 
