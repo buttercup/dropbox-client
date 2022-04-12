@@ -8,6 +8,10 @@
     "test": "npm run test:all",
     "test:all": "nyc mocha -r test/index.js 'test/specs/**/*.spec.js'"
   },
+  "files": [
+    "source/**/*.js",
+    "*.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/buttercup/dropbox-client.git"

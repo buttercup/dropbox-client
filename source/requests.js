@@ -11,13 +11,16 @@ function createDirectory(directory, token, patcher) {
         method: "POST",
         url: DIRECTORY_CREATE_URL,
         headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain; charset=dropbox-cors-hack"
         },
-        body: {
+        query: {
+            authorization: `Bearer ${token}`,
+            reject_cors_preflight: "true"
+        },
+        body: JSON.stringify({
             path: directory,
             autorename: false
-        }
+        })
     };
     return patcher.execute("request", config)
         .then(() => {});
@@ -28,12 +31,15 @@ function deleteFile(filename, token, patcher) {
         method: "POST",
         url: DELETE_URL,
         headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain; charset=dropbox-cors-hack"
         },
-        body: {
+        query: {
+            authorization: `Bearer ${token}`,
+            reject_cors_preflight: "true"
+        },
+        body: JSON.stringify({
             path: filename
-        }
+        })
     };
     return patcher.execute("request", config)
         .then(() => {});
@@ -45,10 +51,13 @@ function getDirectoryContents(dirPath, token, patcher) {
         method: "POST",
         url: DIRECTORY_CONTENTS_URL,
         headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain; charset=dropbox-cors-hack"
         },
-        body: {
+        query: {
+            authorization: `Bearer ${token}`,
+            reject_cors_preflight: "true"
+        },
+        body: JSON.stringify({
             path,
             recursive: false,
             limit: 2000,
@@ -56,7 +65,7 @@ function getDirectoryContents(dirPath, token, patcher) {
             include_deleted: false,
             include_has_explicit_shared_members: false,
             include_mounted_folders: true
-        }
+        })
     };
     return patcher.execute("request", config)
         .then(response => {
@@ -69,12 +78,15 @@ function getFileContents(filename, token, patcher) {
     const config = {
         method: "POST",
         url: DOWNLOAD_URL,
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "text/plain",
-            "Dropbox-API-Arg": urlSafeJSONStringify({
+        query: {
+            arg: urlSafeJSONStringify({
                 path: filename
-            })
+            }),
+            authorization: `Bearer ${token}`,
+            reject_cors_preflight: "true"
+        },
+        headers: {
+            "Content-Type": "text/plain"
         }
     };
     return patcher.execute("request", config)
