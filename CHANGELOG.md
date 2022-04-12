@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.8.0
+_2022-04-12_
+
+ * CORS/browser compatibility upgrade for all requests
+
 ## v0.7.3
 _2022-01-30_
 
