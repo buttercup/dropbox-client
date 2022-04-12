@@ -23,7 +23,7 @@ describe("DropboxClient", function() {
 
             it("makes the correct request", function() {
                 return this.client.createDirectory("/Sub/Two/Three").then(() => {
-                    expect(this.request.firstCall.args[0]).to.have.nested.property("body.path", "/Sub/Two/Three");
+                    expect(this.request.firstCall.args[0]).to.have.property("body").that.matches(/path":"\/Sub\/Two\/Three/);
                     expect(this.request.firstCall.args[0]).to.have.nested.property("url").that.matches(
                         /\/create_folder_v2$/
                     );
@@ -80,7 +80,7 @@ describe("DropboxClient", function() {
             it("passes the token in the request", function() {
                 return this.client.getDirectoryContents("/Sub").then(() => {
                     const arg = this.request.firstCall.args[0];
-                    expect(arg.headers).to.have.property("Authorization", `Bearer ${FAKE_TOKEN}`);
+                    expect(arg.query).to.have.property("authorization", `Bearer ${FAKE_TOKEN}`);
                 });
             });
         });
@@ -102,7 +102,7 @@ describe("DropboxClient", function() {
             it("passes the token in the request", function() {
                 return this.client.getFileContents("/file.txt").then(() => {
                     const arg = this.request.firstCall.args[0];
-                    expect(arg.headers).to.have.property("Authorization", `Bearer ${FAKE_TOKEN}`);
+                    expect(arg.query).to.have.property("authorization", `Bearer ${FAKE_TOKEN}`);
                 });
             });
         });
