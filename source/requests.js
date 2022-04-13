@@ -76,7 +76,7 @@ function getDirectoryContents(dirPath, token, patcher) {
 
 function getFileContents(filename, token, patcher) {
     const config = {
-        method: "POST",
+        method: "GET",
         url: DOWNLOAD_URL,
         query: {
             arg: urlSafeJSONStringify({
@@ -84,9 +84,6 @@ function getFileContents(filename, token, patcher) {
             }),
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        },
-        headers: {
-            "Content-Type": "text/plain"
         }
     };
     return patcher.execute("request", config)
