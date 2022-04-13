@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v0.8.1
+_2022-04-13_
+
+ * GET method for `getFileContents`
+
 ## v0.8.0
 _2022-04-12_
 
