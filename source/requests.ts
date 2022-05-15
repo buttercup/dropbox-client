@@ -9,17 +9,25 @@ const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
 const METADATA_URL = "https://api.dropboxapi.com/2/files/get_metadata";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
-export async function createDirectory(directory: string, token: string, patcher: HotPatcher): Promise<void> {
+export async function createDirectory(
+    directory: string,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<void> {
     const config = {
         method: "POST",
         url: DIRECTORY_CREATE_URL,
-        headers: {
+        headers: compat ? {
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        } : {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
-        query: {
+        query: compat ? {
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        },
+        } : {},
         body: JSON.stringify({
             path: directory,
             autorename: false
@@ -28,17 +36,25 @@ export async function createDirectory(directory: string, token: string, patcher:
     await patcher.execute("request", config);
 }
 
-export async function deleteFile(filename: string, token: string, patcher: HotPatcher): Promise<void> {
+export async function deleteFile(
+    filename: string,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<void> {
     const config = {
         method: "POST",
         url: DELETE_URL,
-        headers: {
+        headers: compat ? {
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        } : {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
-        query: {
+        query: compat ? {
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        },
+        } : {},
         body: JSON.stringify({
             path: filename
         })
@@ -46,18 +62,26 @@ export async function deleteFile(filename: string, token: string, patcher: HotPa
     await patcher.execute("request", config);
 }
 
-export async function getDirectoryContents(dirPath: string, token: string, patcher: HotPatcher): Promise<Array<DropboxPathInfo>> {
+export async function getDirectoryContents(
+    dirPath: string,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<Array<DropboxPathInfo>> {
     const path = dirPath === "/" ? "" : dirPath;
     const config = {
         method: "POST",
         url: DIRECTORY_CONTENTS_URL,
-        headers: {
+        headers: compat ? {
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        } : {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
-        query: {
+        query: compat ? {
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        },
+        } : {},
         body: JSON.stringify({
             path,
             recursive: false,
@@ -73,42 +97,61 @@ export async function getDirectoryContents(dirPath: string, token: string, patch
     return entries.map(convertDropboxPathInfo);
 }
 
-export async function getFileContents(filename: string, token: string, patcher: HotPatcher): Promise<string> {
+export async function getFileContents(
+    filename: string,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<string> {
     const config = {
         method: "GET",
         url: DOWNLOAD_URL,
-        query: {
+        headers: compat ? {} : {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "text/plain",
+            "Dropbox-API-Arg": urlSafeJSONStringify({
+                path: filename
+            })
+        },
+        query: compat ? {
             arg: urlSafeJSONStringify({
                 path: filename
             }),
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        }
+        } : {}
     };
     const response = await patcher.execute("request", config);
     return response.data;
 }
 
-export async function getMetadata(path: string, token: string, patcher: HotPatcher): Promise<DropboxPathInfo> {
+export async function getMetadata(
+    path: string,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<DropboxPathInfo> {
     if (!path || path === "/") {
         throw new Error("Reading metadata of root not supported by Dropbox");
     }
     const config = {
         method: "POST",
         url: METADATA_URL,
-        headers: {
+        headers: compat ? {
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        } : {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
-        query: {
+        query: compat ? {
             authorization: `Bearer ${token}`,
             reject_cors_preflight: "true"
-        },
+        } : {},
         body: JSON.stringify({
             path
         })
     };
     const response = await patcher.execute("request", config);
-    console.log(JSON.stringify(response.data, undefined, 4));
     return convertDropboxPathInfo(response.data);
 }
 
