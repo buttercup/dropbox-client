@@ -1,12 +1,15 @@
-const { convertDirectoryResult, urlSafeJSONStringify } = require("./convert.js");
+import HotPatcher from "hot-patcher";
+import { convertDropboxPathInfo, urlSafeJSONStringify } from "./convert.js";
+import { DropboxPathInfo } from "./types.js";
 
 const DELETE_URL = "https://api.dropboxapi.com/2/files/delete_v2";
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
 const DIRECTORY_CREATE_URL = "https://api.dropboxapi.com/2/files/create_folder_v2";
 const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
+const METADATA_URL = "https://api.dropboxapi.com/2/files/get_metadata";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
-function createDirectory(directory, token, patcher) {
+export async function createDirectory(directory: string, token: string, patcher: HotPatcher): Promise<void> {
     const config = {
         method: "POST",
         url: DIRECTORY_CREATE_URL,
@@ -22,11 +25,10 @@ function createDirectory(directory, token, patcher) {
             autorename: false
         })
     };
-    return patcher.execute("request", config)
-        .then(() => {});
+    await patcher.execute("request", config);
 }
 
-function deleteFile(filename, token, patcher) {
+export async function deleteFile(filename: string, token: string, patcher: HotPatcher): Promise<void> {
     const config = {
         method: "POST",
         url: DELETE_URL,
@@ -41,11 +43,10 @@ function deleteFile(filename, token, patcher) {
             path: filename
         })
     };
-    return patcher.execute("request", config)
-        .then(() => {});
+    await patcher.execute("request", config);
 }
 
-function getDirectoryContents(dirPath, token, patcher) {
+export async function getDirectoryContents(dirPath: string, token: string, patcher: HotPatcher): Promise<Array<DropboxPathInfo>> {
     const path = dirPath === "/" ? "" : dirPath;
     const config = {
         method: "POST",
@@ -67,14 +68,12 @@ function getDirectoryContents(dirPath, token, patcher) {
             include_mounted_folders: true
         })
     };
-    return patcher.execute("request", config)
-        .then(response => {
-            const { entries } = response.data;
-            return entries.map(convertDirectoryResult);
-        });
+    const response = await patcher.execute("request", config);
+    const { entries } = response.data;
+    return entries.map(convertDropboxPathInfo);
 }
 
-function getFileContents(filename, token, patcher) {
+export async function getFileContents(filename: string, token: string, patcher: HotPatcher): Promise<string> {
     const config = {
         method: "GET",
         url: DOWNLOAD_URL,
@@ -86,11 +85,33 @@ function getFileContents(filename, token, patcher) {
             reject_cors_preflight: "true"
         }
     };
-    return patcher.execute("request", config)
-        .then(response => response.data);
+    const response = await patcher.execute("request", config);
+    return response.data;
 }
 
-function putFileContents(filename, data, token, patcher) {
+export async function getMetadata(path: string, token: string, patcher: HotPatcher): Promise<DropboxPathInfo> {
+    if (!path || path === "/") {
+        throw new Error("Reading metadata of root not supported by Dropbox");
+    }
+    const config = {
+        method: "POST",
+        url: METADATA_URL,
+        headers: {
+            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        },
+        query: {
+            authorization: `Bearer ${token}`,
+            reject_cors_preflight: "true"
+        },
+        body: JSON.stringify({
+            path
+        })
+    };
+    const response = await patcher.execute("request", config);
+    return convertDropboxPathInfo(response.data);
+}
+
+export async function putFileContents(filename: string, data: string | Buffer, token: string, patcher: HotPatcher): Promise<void> {
     const config = {
         method: "POST",
         url: UPLOAD_URL,
@@ -107,14 +128,5 @@ function putFileContents(filename, data, token, patcher) {
         },
         body: data
     };
-    return patcher.execute("request", config)
-        .then(() => {})
+    await patcher.execute("request", config);
 }
-
-module.exports = {
-    createDirectory,
-    deleteFile,
-    getDirectoryContents,
-    getFileContents,
-    putFileContents
-};
