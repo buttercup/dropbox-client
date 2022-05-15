@@ -2,14 +2,17 @@
   "name": "@buttercup/dropbox-client",
   "version": "0.8.1",
   "description": "Dropbox client library",
-  "main": "source/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build",
     "test": "npm run test:all",
     "test:all": "nyc mocha -r test/index.js 'test/specs/**/*.spec.js'"
   },
   "files": [
-    "source/**/*.js",
-    "*.md"
+    "dist/**/*"
   ],
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "chai-as-promised": "^7.1.1",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
+    "rimraf": "^3.0.2",
     "sinon": "^14.0.0",
     "typescript": "^4.6.4"
   }
