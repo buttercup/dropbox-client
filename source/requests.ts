@@ -108,6 +108,7 @@ export async function getMetadata(path: string, token: string, patcher: HotPatch
         })
     };
     const response = await patcher.execute("request", config);
+    console.log(JSON.stringify(response.data, undefined, 4));
     return convertDropboxPathInfo(response.data);
 }
 

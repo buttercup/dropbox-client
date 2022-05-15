@@ -19,6 +19,15 @@ export class DropboxClient {
         await createDirectory(path, this.__token, this.patcher);
     }
 
+    async delete(path: string): Promise<void> {
+        await deleteFile(path, this.__token, this.patcher);
+    }
+
+    /**
+     * Delete a remote file
+     * @deprecated Use `delete` instead
+     * @param path The file path to delete
+     */
     async deleteFile(path: string): Promise<void> {
         await deleteFile(path, this.__token, this.patcher);
     }

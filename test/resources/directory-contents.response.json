@@ -1,0 +1,27 @@
+{
+    "entries": [
+        {
+            ".tag": "folder",
+            "name": "Personal",
+            "path_lower": "/personal",
+            "path_display": "/Personal",
+            "id": "id:CcDqyH7wP7QAAAAAAAAAyC"
+        },
+        {
+            ".tag": "folder",
+            "name": "Project (1)",
+            "path_lower": "/project (1)",
+            "path_display": "/Project (1)",
+            "id": "id:CcDqyH7wP7QAAAAAAAACgz",
+            "shared_folder_id": "290136323",
+            "sharing_info": {
+                "read_only": false,
+                "shared_folder_id": "290136323",
+                "traverse_only": false,
+                "no_access": false
+            }
+        }
+    ],
+    "cursor": "abc123",
+    "has_more": false
+}
