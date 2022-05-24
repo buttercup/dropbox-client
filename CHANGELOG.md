@@ -1,5 +1,12 @@
 # Dropbox Client changelog
 
+## v1.0.0
+_2022-05-24_
+
+ * Typescript
+ * `DropboxClient` class replaces `createClient`
+ * `DropboxClient#fs` replaces `createFsClient`
+
 ## v0.8.1
 _2022-04-13_
 

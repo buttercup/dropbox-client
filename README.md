@@ -28,17 +28,17 @@ const url = generateAuthorisationURL("client-id", "https://redir.example.com");
 
 ### Client
 
-Use the `createClient` method to create a client interface:
+Use the `DropboxClient` class to create a client interface:
 
-```javascript
-const { createClient } = require("@buttercup/dropbox-client");
+```typescript
+const { DropboxClient } = require("@buttercup/dropbox-client");
 
-const client = createClient("my-token");
+const client = new DropboxClient("my-token");
 ```
 
 You can then use the `client` adapter to make requests like for directory contents:
 
-```javascript
+```typescript
 client
     .getDirectoryContents("/Documents")
     .then(contents => {
@@ -54,21 +54,26 @@ client
     });
 ```
 
-You can also read and write files using `getFileContents` and `putFileContents`, respectively. Check out the [API documentation](API.md) for more information.
+You can also read and write files using `getFileContents` and `putFileContents`, respectively.
+
+### Compatibility Mode
+
+You can enable compatibility mode for browser-based environments where CORS may break requests:
+
+```typescript
+const client = new DropboxClient("my-token", { compat: true });
+```
 
 ### Fs
 
 An `fs`-like interface is also available:
 
-```javascript
-const { createClient, createFsInterface } = require("@buttercup/dropbox-client");
+```typescript
+const { DropboxClient } = require("@buttercup/dropbox-client");
 
-const client = createClient("my-token");
-const dfs = createFsInterface(client);
+const client = new DropboxClient("my-token");
 
-dfs.readdir("/photos", (err, items) => {
+client.fs.readdir("/photos", (err, items) => {
     // array of file names
 });
 ```
-
-Read the [fs API documentation](API.md#DropboxClientFsAdapter) for more information on the available methods.
