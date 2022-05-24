@@ -201,8 +201,23 @@ describe("DropboxClient", function() {
 
                 describe("with a directory target", function() {
                     it("returns correct item type", async function() {
-                        const item = await this.client.getInfo("/testing.txt");
+                        const item = await this.client.getInfo("/testing");
                         expect(item).to.have.property("type", "directory");
+                    });
+
+                    it("returns 0 size", async function() {
+                        const item = await this.client.getInfo("/testing");
+                        expect(item).to.have.property("size", 0);
+                    });
+
+                    it("returns correct name", async function() {
+                        const item = await this.client.getInfo("/Personal");
+                        expect(item).to.have.property("name", "Personal");
+                    });
+
+                    it("returns correct path", async function() {
+                        const item = await this.client.getInfo("/Personal");
+                        expect(item).to.have.property("path", "/Personal");
                     });
                 });
 
@@ -217,7 +232,42 @@ describe("DropboxClient", function() {
                         const item = await this.client.getInfo("/testing.txt");
                         expect(item).to.have.property("type", "file");
                     });
+
+                    it("returns correct item size", async function() {
+                        const item = await this.client.getInfo("/testing.txt");
+                        expect(item).to.have.property("size", 61488);
+                    });
+
+                    it("returns correct name", async function() {
+                        const item = await this.client.getInfo("/A picture.png");
+                        expect(item).to.have.property("name", "A picture.png");
+                    });
+
+                    it("returns correct path", async function() {
+                        const item = await this.client.getInfo("/A picture.png");
+                        expect(item).to.have.property("path", "/A picture.png");
+                    });
                 });
+            });
+
+            describe("putFileContents", function() {
+                it("specifies the correct URL", async function() {
+                    await this.client.putFileContents("/testing.txt", "test");
+                    const [config] = this.request.firstCall.args;
+                    expect(config).to.have.property("url").that.matches(/files\/upload$/);
+                });
+
+                it("specifies the correct method", async function() {
+                    await this.client.putFileContents("/testing.txt", "test");
+                    const [config] = this.request.firstCall.args;
+                    expect(config).to.have.property("method", "POST");
+                });
+
+                // it("provides authorisation", async function() {
+                //     await this.client.putFileContents("/testing.txt", "test");
+                //     const [config] = this.request.firstCall.args;
+                //     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
+                // });
             });
         });
     });
