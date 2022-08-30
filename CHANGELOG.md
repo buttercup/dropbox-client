@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v1.0.1
+_2022-08-30_
+
+ * **Bugfix**:
+   * Add `compat` support for `putFileContents`
+
 ## v1.0.0
 _2022-05-24_
 
