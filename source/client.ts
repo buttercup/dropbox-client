@@ -51,7 +51,7 @@ export class DropboxClient {
     }
 
     async putFileContents(filename: string, data: string | Buffer): Promise<void> {
-        await putFileContents(filename, data, this.__token, this.patcher);
+        await putFileContents(filename, data, this.__token, this.patcher, this._config.compat);
     }
 }
 

@@ -155,7 +155,13 @@ export async function getMetadata(
     return convertDropboxPathInfo(response.data);
 }
 
-export async function putFileContents(filename: string, data: string | Buffer, token: string, patcher: HotPatcher): Promise<void> {
+export async function putFileContents(
+    filename: string,
+    data: string | Buffer,
+    token: string,
+    patcher: HotPatcher,
+    compat: boolean = false
+): Promise<void> {
     const config = {
         method: "POST",
         url: UPLOAD_URL,
@@ -164,10 +170,15 @@ export async function putFileContents(filename: string, data: string | Buffer, t
                 path: filename,
                 mode: "overwrite"
             }),
-            authorization: `Bearer ${token}`,
-            reject_cors_preflight: "true"
+            ...(compat ? {
+                authorization: `Bearer ${token}`,
+                reject_cors_preflight: "true"
+            } : {})
         },
-        headers: {
+        headers: compat ? {
+            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+        } : {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/octet-stream"
         },
         body: data
