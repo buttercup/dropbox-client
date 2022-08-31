@@ -47,10 +47,10 @@ describe("DropboxClient", function() {
             contentType: "text/plain; charset=dropbox-cors-hack",
             fileContentsPath: "query.arg"
         }]
-    ].forEach(([config, { authPath, contentType, fileContentsPath }]) => {
-        describe(`using config: ${JSON.stringify(config)}`, function() {
+    ].forEach(([clientConfig, { authPath, contentType, fileContentsPath }]) => {
+        describe(`using config: ${JSON.stringify(clientConfig)}`, function() {
             beforeEach(function() {
-                this.client = new DropboxClient(TOKEN, config);
+                this.client = new DropboxClient(TOKEN, clientConfig);
                 this.client.patcher.patch("request", (...args) => this.request(...args));
             });
 
@@ -86,11 +86,11 @@ describe("DropboxClient", function() {
                     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.createDirectory("/test directory");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
             });
@@ -127,11 +127,11 @@ describe("DropboxClient", function() {
                     expect(body).to.have.property("path").that.equals("/test.txt");
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.delete("/test.txt");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
             });
@@ -182,11 +182,11 @@ describe("DropboxClient", function() {
                     expect(body).to.have.property("limit").that.equals(2000);
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.getDirectoryContents("/testing");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
             });
@@ -217,11 +217,11 @@ describe("DropboxClient", function() {
                     expect(arg).to.have.property("path").that.equals("/testing.txt");
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.getFileContents("/testing.txt");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
             });
@@ -251,11 +251,11 @@ describe("DropboxClient", function() {
                     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.getInfo("/testing.txt");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
 
@@ -329,11 +329,11 @@ describe("DropboxClient", function() {
                     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
                 });
 
-                if (config.headers) {
+                if (clientConfig.headers) {
                     it("specifies custom headers", async function() {
                         await this.client.putFileContents("/testing.txt", "test");
                         const [config] = this.request.firstCall.args;
-                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                        expect(config).to.have.property("headers").that.deep.includes(clientConfig.headers);
                     });
                 }
             });

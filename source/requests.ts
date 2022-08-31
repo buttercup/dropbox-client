@@ -194,7 +194,8 @@ export async function putFileContents(
     clientConfig: DropboxClientConfig
 ): Promise<void> {
     const {
-        compat = false
+        compat = false,
+        headers = {}
     } = clientConfig;
     const config = {
         method: "POST",
@@ -210,8 +211,10 @@ export async function putFileContents(
             } : {})
         },
         headers: compat ? {
+            ...headers,
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
         } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/octet-stream"
         },

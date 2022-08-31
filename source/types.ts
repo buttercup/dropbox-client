@@ -2,7 +2,7 @@ export type { Stats } from "fs";
 
 export interface DropboxClientConfig {
     compat?: boolean;
-    headers?: Map<string, string>;
+    headers?: Record<string, string>;
 }
 
 export interface DropboxItemResult {
