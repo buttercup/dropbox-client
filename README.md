@@ -64,6 +64,19 @@ You can enable compatibility mode for browser-based environments where CORS may 
 const client = new DropboxClient("my-token", { compat: true });
 ```
 
+### Custom Headers
+
+You can provide custom headers to all the requests the client makes by specifying the `headers` option:
+
+```typescript
+const client = new DropboxClient("my-token", {
+    headers: {
+        // Disable the cache (works/necessary in some environments)
+        "Cache-Control": "no-cache, no-store, max-age=0"
+    }
+});
+```
+
 ### Fs
 
 An `fs`-like interface is also available:
