@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v1.1.0
+_2022-08-21_
+
+ * `headers` client option for custom headers
+
 ## v1.0.1
 _2022-08-30_
 
