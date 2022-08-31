@@ -2,11 +2,7 @@ import HotPatcher from "hot-patcher";
 import { request } from "cowl";
 import { createDirectory, deleteFile, getDirectoryContents, getFileContents, getMetadata, putFileContents } from "./requests.js";
 import { DropboxFSInterface } from "./fs.js";
-import { DropboxPathInfo } from "./types.js";
-
-export interface DropboxClientConfig {
-    compat?: boolean;
-}
+import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
 
 export class DropboxClient {
     fs: DropboxFSInterface;
@@ -22,11 +18,11 @@ export class DropboxClient {
     }
 
     async createDirectory(path: string): Promise<void> {
-        await createDirectory(path, this.__token, this.patcher, this._config.compat);
+        await createDirectory(path, this.__token, this.patcher, this._config);
     }
 
     async delete(path: string): Promise<void> {
-        await deleteFile(path, this.__token, this.patcher, this._config.compat);
+        await deleteFile(path, this.__token, this.patcher, this._config);
     }
 
     /**
@@ -39,19 +35,19 @@ export class DropboxClient {
     }
 
     async getDirectoryContents(path: string): Promise<Array<DropboxPathInfo>> {
-        return getDirectoryContents(path, this.__token, this.patcher, this._config.compat);
+        return getDirectoryContents(path, this.__token, this.patcher, this._config);
     }
 
     async getFileContents(filename: string): Promise<string> {
-        return getFileContents(filename, this.__token, this.patcher, this._config.compat);
+        return getFileContents(filename, this.__token, this.patcher, this._config);
     }
 
     async getInfo(path: string): Promise<DropboxPathInfo> {
-        return getMetadata(path, this.__token, this.patcher, this._config.compat);
+        return getMetadata(path, this.__token, this.patcher, this._config);
     }
 
     async putFileContents(filename: string, data: string | Buffer): Promise<void> {
-        await putFileContents(filename, data, this.__token, this.patcher, this._config.compat);
+        await putFileContents(filename, data, this.__token, this.patcher, this._config);
     }
 }
 

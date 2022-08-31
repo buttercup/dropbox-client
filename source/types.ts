@@ -1,5 +1,10 @@
 export type { Stats } from "fs";
 
+export interface DropboxClientConfig {
+    compat?: boolean;
+    headers?: Map<string, string>;
+}
+
 export interface DropboxItemResult {
     ".tag": "file" | "folder";
     client_modified?: string;

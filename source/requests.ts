@@ -1,6 +1,6 @@
 import HotPatcher from "hot-patcher";
 import { convertDropboxPathInfo, urlSafeJSONStringify } from "./convert.js";
-import { DropboxPathInfo } from "./types.js";
+import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
 
 const DELETE_URL = "https://api.dropboxapi.com/2/files/delete_v2";
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
@@ -13,14 +13,20 @@ export async function createDirectory(
     directory: string,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<void> {
+    const {
+        compat = false,
+        headers = {}
+    } = clientConfig;
     const config = {
         method: "POST",
         url: DIRECTORY_CREATE_URL,
         headers: compat ? {
+            ...headers,
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
         } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
@@ -40,14 +46,20 @@ export async function deleteFile(
     filename: string,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<void> {
+    const {
+        compat = false,
+        headers = {}
+    } = clientConfig;
     const config = {
         method: "POST",
         url: DELETE_URL,
         headers: compat ? {
+            ...headers,
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
         } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
@@ -66,15 +78,21 @@ export async function getDirectoryContents(
     dirPath: string,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<Array<DropboxPathInfo>> {
+    const {
+        compat = false,
+        headers = {}
+    } = clientConfig;
     const path = dirPath === "/" ? "" : dirPath;
     const config = {
         method: "POST",
         url: DIRECTORY_CONTENTS_URL,
         headers: compat ? {
+            ...headers,
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
         } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
@@ -101,12 +119,19 @@ export async function getFileContents(
     filename: string,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<string> {
+    const {
+        compat = false,
+        headers = {}
+    } = clientConfig;
     const config = {
         method: "GET",
         url: DOWNLOAD_URL,
-        headers: compat ? {} : {
+        headers: compat ? {
+            ...headers
+        } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "text/plain",
             "Dropbox-API-Arg": urlSafeJSONStringify({
@@ -129,17 +154,23 @@ export async function getMetadata(
     path: string,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<DropboxPathInfo> {
     if (!path || path === "/") {
         throw new Error("Reading metadata of root not supported by Dropbox");
     }
+    const {
+        compat = false,
+        headers = {}
+    } = clientConfig;
     const config = {
         method: "POST",
         url: METADATA_URL,
         headers: compat ? {
+            ...headers,
             "Content-Type": "text/plain; charset=dropbox-cors-hack"
         } : {
+            ...headers,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         },
@@ -160,8 +191,11 @@ export async function putFileContents(
     data: string | Buffer,
     token: string,
     patcher: HotPatcher,
-    compat: boolean = false
+    clientConfig: DropboxClientConfig
 ): Promise<void> {
+    const {
+        compat = false
+    } = clientConfig;
     const config = {
         method: "POST",
         url: UPLOAD_URL,
