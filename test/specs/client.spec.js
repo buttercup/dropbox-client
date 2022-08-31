@@ -7,6 +7,7 @@ const DIRECTORY_CONTENTS_RESPONSE = require("../resources/directory-contents.res
 const DIRECTORY_INFO_RESPONSE = require("../resources/metadata-directory.response.json");
 const FILE_INFO_RESPONSE = require("../resources/metadata-file.response.json");
 
+const CACHE_CONTROL = "no-cache, no-store, max-age=0";
 const TOKEN = "abc123";
 
 describe("DropboxClient", function() {
@@ -23,6 +24,25 @@ describe("DropboxClient", function() {
             fileContentsPath: "headers.Dropbox-API-Arg"
         }],
         [{ compat: true }, {
+            authPath: "query.authorization",
+            contentType: "text/plain; charset=dropbox-cors-hack",
+            fileContentsPath: "query.arg"
+        }],
+        [{
+            headers: {
+                "Cache-Control": CACHE_CONTROL
+            }
+        }, {
+            authPath: "headers.Authorization",
+            contentType: "application/json",
+            fileContentsPath: "headers.Dropbox-API-Arg"
+        }],
+        [{
+            headers: {
+                "Cache-Control": CACHE_CONTROL
+            },
+            compat: true
+        }, {
             authPath: "query.authorization",
             contentType: "text/plain; charset=dropbox-cors-hack",
             fileContentsPath: "query.arg"
@@ -65,6 +85,14 @@ describe("DropboxClient", function() {
                     const [config] = this.request.firstCall.args;
                     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
                 });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.createDirectory("/test directory");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
             });
 
             describe("delete", function() {
@@ -98,6 +126,14 @@ describe("DropboxClient", function() {
                     const body = JSON.parse(config.body);
                     expect(body).to.have.property("path").that.equals("/test.txt");
                 });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.delete("/test.txt");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
             });
 
             describe("getDirectoryContents", function() {
@@ -145,6 +181,14 @@ describe("DropboxClient", function() {
                     expect(body).to.have.property("recursive").that.equals(false);
                     expect(body).to.have.property("limit").that.equals(2000);
                 });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.getDirectoryContents("/testing");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
             });
 
             describe("getFileContents", function() {
@@ -172,6 +216,14 @@ describe("DropboxClient", function() {
                     const arg = JSON.parse(nested.get(config, fileContentsPath));
                     expect(arg).to.have.property("path").that.equals("/testing.txt");
                 });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.getFileContents("/testing.txt");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
             });
 
             describe("getInfo", function() {
@@ -198,6 +250,14 @@ describe("DropboxClient", function() {
                     const [config] = this.request.firstCall.args;
                     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
                 });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.getInfo("/testing.txt");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
 
                 describe("with a directory target", function() {
                     it("returns correct item type", async function() {
@@ -263,11 +323,19 @@ describe("DropboxClient", function() {
                     expect(config).to.have.property("method", "POST");
                 });
 
-                // it("provides authorisation", async function() {
-                //     await this.client.putFileContents("/testing.txt", "test");
-                //     const [config] = this.request.firstCall.args;
-                //     expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
-                // });
+                it("provides authorisation", async function() {
+                    await this.client.putFileContents("/testing.txt", "test");
+                    const [config] = this.request.firstCall.args;
+                    expect(config).to.have.nested.property(authPath, `Bearer ${TOKEN}`);
+                });
+
+                if (config.headers) {
+                    it("specifies custom headers", async function() {
+                        await this.client.putFileContents("/testing.txt", "test");
+                        const [config] = this.request.firstCall.args;
+                        expect(config).to.have.property("headers").that.deep.equals(config.headers);
+                    });
+                }
             });
         });
     });
