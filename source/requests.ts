@@ -9,6 +9,9 @@ const DOWNLOAD_URL = "https://content.dropboxapi.com/2/files/download";
 const METADATA_URL = "https://api.dropboxapi.com/2/files/get_metadata";
 const UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
+const CONTENT_TYPE_CORS_HACK = "text/plain; charset=dropbox-cors-hack";
+const CONTENT_TYPE_OCTET_STREAM = "application/octet-stream";
+
 export async function createDirectory(
     directory: string,
     token: string,
@@ -24,7 +27,7 @@ export async function createDirectory(
         url: DIRECTORY_CREATE_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+            "Content-Type": CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -57,7 +60,7 @@ export async function deleteFile(
         url: DELETE_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+            "Content-Type": CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -90,7 +93,7 @@ export async function getDirectoryContents(
         url: DIRECTORY_CONTENTS_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+            "Content-Type": CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -168,7 +171,7 @@ export async function getMetadata(
         url: METADATA_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+            "Content-Type": CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -212,7 +215,7 @@ export async function putFileContents(
         },
         headers: compat ? {
             ...headers,
-            "Content-Type": "text/plain; charset=dropbox-cors-hack"
+            "Content-Type": clientConfig.compatPutCorsHack !== false ? CONTENT_TYPE_CORS_HACK : CONTENT_TYPE_OCTET_STREAM
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,

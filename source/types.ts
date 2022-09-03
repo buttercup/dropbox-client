@@ -2,6 +2,7 @@ export type { Stats } from "fs";
 
 export interface DropboxClientConfig {
     compat?: boolean;
+    compatPutCorsHack?: boolean;
     headers?: Record<string, string>;
 }
 
