@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v1.1.3
+_2022-09-03_
+
+ * Switch `compatPutCorsHack` for `compatCorsHack` for all methods
+ * Deprecate `compatPutCorsHack`
+
 ## v1.1.2
 _2022-09-03_
 
