@@ -64,12 +64,12 @@ You can enable compatibility mode for browser-based environments where CORS may 
 const client = new DropboxClient("my-token", { compat: true });
 ```
 
-In some browser environments the "CORS hack" Content-Type header can fail, so this can be disabled by specifying `false` for the `compatPutCorsHack` property:
+In some browser environments the "CORS hack" Content-Type header can fail, so this can be disabled by specifying `false` for the `compatCorsHack` property:
 
 ```typescript
 const client = new DropboxClient("my-token", {
     compat: true,
-    compatPutCorsHack: false
+    compatCorsHack: false
 });
 ```
 

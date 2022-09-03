@@ -27,7 +27,9 @@ export async function createDirectory(
         url: DIRECTORY_CREATE_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": CONTENT_TYPE_CORS_HACK
+            "Content-Type": clientConfig.compatCorsHack === false
+                ? "application/json"
+                : CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -60,7 +62,9 @@ export async function deleteFile(
         url: DELETE_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": CONTENT_TYPE_CORS_HACK
+            "Content-Type": clientConfig.compatCorsHack === false
+                ? "application/json"
+                : CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -93,7 +97,9 @@ export async function getDirectoryContents(
         url: DIRECTORY_CONTENTS_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": CONTENT_TYPE_CORS_HACK
+            "Content-Type": clientConfig.compatCorsHack === false
+                ? "application/json"
+                : CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -171,7 +177,9 @@ export async function getMetadata(
         url: METADATA_URL,
         headers: compat ? {
             ...headers,
-            "Content-Type": CONTENT_TYPE_CORS_HACK
+            "Content-Type": clientConfig.compatCorsHack === false
+                ? "application/json"
+                : CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
@@ -215,7 +223,9 @@ export async function putFileContents(
         },
         headers: compat ? {
             ...headers,
-            "Content-Type": clientConfig.compatPutCorsHack !== false ? CONTENT_TYPE_CORS_HACK : CONTENT_TYPE_OCTET_STREAM
+            "Content-Type": (clientConfig.compatCorsHack === false || clientConfig.compatPutCorsHack === false)
+                ? CONTENT_TYPE_OCTET_STREAM
+                : CONTENT_TYPE_CORS_HACK
         } : {
             ...headers,
             Authorization: `Bearer ${token}`,
