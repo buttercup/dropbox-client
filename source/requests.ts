@@ -1,4 +1,4 @@
-import HotPatcher from "hot-patcher";
+import { HotPatcher } from "hot-patcher";
 import { convertDropboxPathInfo, urlSafeJSONStringify } from "./convert.js";
 import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
 
