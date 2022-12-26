@@ -1,5 +1,6 @@
 import { HotPatcher } from "hot-patcher";
 import { convertDropboxPathInfo, urlSafeJSONStringify } from "./convert.js";
+import { handleBadResponse, RequestConfig } from "./request.js";
 import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
 
 const DELETE_URL = "https://api.dropboxapi.com/2/files/delete_v2";
@@ -22,7 +23,7 @@ export async function createDirectory(
         compat = false,
         headers = {}
     } = clientConfig;
-    const config = {
+    const config: RequestConfig = {
         method: "POST",
         url: DIRECTORY_CREATE_URL,
         headers: compat ? {
@@ -44,7 +45,8 @@ export async function createDirectory(
             autorename: false
         })
     };
-    await patcher.execute("request", config);
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
 }
 
 export async function deleteFile(
@@ -57,7 +59,7 @@ export async function deleteFile(
         compat = false,
         headers = {}
     } = clientConfig;
-    const config = {
+    const config: RequestConfig = {
         method: "POST",
         url: DELETE_URL,
         headers: compat ? {
@@ -78,7 +80,8 @@ export async function deleteFile(
             path: filename
         })
     };
-    await patcher.execute("request", config);
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
 }
 
 export async function getDirectoryContents(
@@ -92,7 +95,7 @@ export async function getDirectoryContents(
         headers = {}
     } = clientConfig;
     const path = dirPath === "/" ? "" : dirPath;
-    const config = {
+    const config: RequestConfig = {
         method: "POST",
         url: DIRECTORY_CONTENTS_URL,
         headers: compat ? {
@@ -119,8 +122,9 @@ export async function getDirectoryContents(
             include_mounted_folders: true
         })
     };
-    const response = await patcher.execute("request", config);
-    const { entries } = response.data;
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
+    const { entries } = await response.json();
     return entries.map(convertDropboxPathInfo);
 }
 
@@ -134,7 +138,7 @@ export async function getFileContents(
         compat = false,
         headers = {}
     } = clientConfig;
-    const config = {
+    const config: RequestConfig = {
         method: "GET",
         url: DOWNLOAD_URL,
         headers: compat ? {
@@ -155,8 +159,10 @@ export async function getFileContents(
             reject_cors_preflight: "true"
         } : {}
     };
-    const response = await patcher.execute("request", config);
-    return response.data;
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
+    const contents = await response.text();
+    return contents;
 }
 
 export async function getMetadata(
@@ -172,7 +178,7 @@ export async function getMetadata(
         compat = false,
         headers = {}
     } = clientConfig;
-    const config = {
+    const config: RequestConfig = {
         method: "POST",
         url: METADATA_URL,
         headers: compat ? {
@@ -193,8 +199,10 @@ export async function getMetadata(
             path
         })
     };
-    const response = await patcher.execute("request", config);
-    return convertDropboxPathInfo(response.data);
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
+    const payload = await response.json();
+    return convertDropboxPathInfo(payload);
 }
 
 export async function putFileContents(
@@ -208,7 +216,7 @@ export async function putFileContents(
         compat = false,
         headers = {}
     } = clientConfig;
-    const config = {
+    const config: RequestConfig = {
         method: "POST",
         url: UPLOAD_URL,
         query: {
@@ -233,5 +241,6 @@ export async function putFileContents(
         },
         body: data
     };
-    await patcher.execute("request", config);
+    const response = await patcher.execute<Promise<Response>>("request", config);
+    handleBadResponse(response);
 }
