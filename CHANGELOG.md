@@ -1,5 +1,13 @@
 # Dropbox Client changelog
 
+## v2.0.0
+_2022-12-26_
+
+ * **Major Release**
+   * ESM-only release
+   * `fetch` for requests, instead of `cowl`/`XMLHttpRequest`
+   * Descriptive errors with properties
+
 ## v1.1.3
 _2022-09-03_
 
