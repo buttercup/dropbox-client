@@ -7,11 +7,13 @@
 
 Dropbox is an integral part of the Buttercup platform as it's used by a huge amount of users to store all kinds of data - including Buttercup vault files. Having a functional, portable and reliable Dropbox client interface is critical to the platform's stability, and currently the official Dropbox SDK is lacking in terms of quality and stability.
 
-This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses [cowl](https://github.com/perry-mitchell/cowl) to perform requests, which is designed to work similarly across multiple platforms.
+This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses `fetch` ([cross-fetch](https://github.com/lquixada/cross-fetch)) to perform requests, which will obviously work in a reproducible fassion across environments.
 
 ## Installation
 
 Simply run `npm install @buttercup/dropbox-client --save` to install.
+
+The latest version (v2) requires an [ESM](https://nodejs.org/api/esm.html) environment to run. It is not available to standard CommonJS projects.
 
 ## Usage
 
@@ -19,8 +21,8 @@ Simply run `npm install @buttercup/dropbox-client --save` to install.
 
 You can generate Dropbox authorisation URLs by using `generateAuthorisationURL`:
 
-```javascript
-const { generateAuthorisationURL } = require("@buttercup/dropbox-client");
+```typescript
+import { generateAuthorisationURL } from "@buttercup/dropbox-client";
 
 const url = generateAuthorisationURL("client-id", "https://redir.example.com");
 // open `url`
@@ -31,7 +33,7 @@ const url = generateAuthorisationURL("client-id", "https://redir.example.com");
 Use the `DropboxClient` class to create a client interface:
 
 ```typescript
-const { DropboxClient } = require("@buttercup/dropbox-client");
+import { generateAuthorisationURL } from "@buttercup/dropbox-client";
 
 const client = new DropboxClient("my-token");
 ```
@@ -91,11 +93,33 @@ const client = new DropboxClient("my-token", {
 An `fs`-like interface is also available:
 
 ```typescript
-const { DropboxClient } = require("@buttercup/dropbox-client");
+import { generateAuthorisationURL } from "@buttercup/dropbox-client";
 
 const client = new DropboxClient("my-token");
 
 client.fs.readdir("/photos", (err, items) => {
     // array of file names
+});
+```
+
+### Error Handling
+
+Errors while performing requests against the Dropbox API will be thrown wrapped in a [`Layerr`](https://github.com/perry-mitchell/layerr) error instance. It provides some extra properties with each error:
+
+```typescript
+import { Layerr } from "layerr";
+
+// ...
+
+client.getDirectoryContents("/").catch((err) => {
+    const {
+        status,
+        statusText,
+        url
+    } = Layerr.info(err);
+
+    if (status === 403) {
+        // ...
+    }
 });
 ```
