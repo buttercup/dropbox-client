@@ -1,7 +1,7 @@
-import HotPatcher from "hot-patcher";
-import { request } from "cowl";
+import { HotPatcher } from "hot-patcher";
 import { createDirectory, deleteFile, getDirectoryContents, getFileContents, getMetadata, putFileContents } from "./requests.js";
 import { DropboxFSInterface } from "./fs.js";
+import { request } from "./request.js";
 import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
 
 export class DropboxClient {

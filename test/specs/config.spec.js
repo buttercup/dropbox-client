@@ -1,11 +1,14 @@
-const { expect } = require("chai");
-const sinon = require("sinon");
-const nested = require("nested-property");
-const { DropboxClient } = require("../../dist/client.js");
+import { createRequire } from "node:module";
+import { expect } from "chai";
+import sinon from "sinon";
+import nested from "nested-property";
+import { DropboxClient } from "../../dist/client.js";
 
-const DIRECTORY_CONTENTS_RESPONSE = require("../resources/directory-contents.response.json");
-const DIRECTORY_INFO_RESPONSE = require("../resources/metadata-directory.response.json");
-const FILE_INFO_RESPONSE = require("../resources/metadata-file.response.json");
+const req = createRequire(import.meta.url);
+
+const DIRECTORY_CONTENTS_RESPONSE = req("../resources/directory-contents.response.json");
+const DIRECTORY_INFO_RESPONSE = req("../resources/metadata-directory.response.json");
+const FILE_INFO_RESPONSE = req("../resources/metadata-file.response.json");
 
 const CACHE_CONTROL = "no-cache, no-store, max-age=0";
 const TOKEN = "abc123";
@@ -13,7 +16,12 @@ const TOKEN = "abc123";
 describe("DropboxClient", function() {
     beforeEach(function() {
         this.request = sinon.stub().callsFake(async () => ({
-            data: {}
+            ok: true,
+            headers: {},
+            json: () => Promise.resolve({}),
+            text: () => Promise.resolve("{}"),
+            status: 200,
+            statusText: "OK"
         }));
     });
 
@@ -139,7 +147,8 @@ describe("DropboxClient", function() {
             describe("getDirectoryContents", function() {
                 beforeEach(function() {
                     this.request.callsFake(async () => ({
-                        data: DIRECTORY_CONTENTS_RESPONSE
+                        ok: true,
+                        json: () => Promise.resolve(DIRECTORY_CONTENTS_RESPONSE)
                     }));
                 });
 
@@ -229,7 +238,8 @@ describe("DropboxClient", function() {
             describe("getInfo", function() {
                 beforeEach(function() {
                     this.request.callsFake(async () => ({
-                        data: DIRECTORY_INFO_RESPONSE
+                        ok: true,
+                        json: () => Promise.resolve(DIRECTORY_INFO_RESPONSE)
                     }));
                 });
 
@@ -284,7 +294,8 @@ describe("DropboxClient", function() {
                 describe("with a file target", function() {
                     beforeEach(function() {
                         this.request.callsFake(async () => ({
-                            data: FILE_INFO_RESPONSE
+                            ok: true,
+                            json: () => Promise.resolve(FILE_INFO_RESPONSE)
                         }));
                     });
 

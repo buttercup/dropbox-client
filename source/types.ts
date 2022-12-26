@@ -29,3 +29,7 @@ export interface DropboxPathInfo {
     id: string;
     size: number;
 }
+
+export interface Headers {
+    [key: string]: string;
+}
