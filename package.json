@@ -30,9 +30,10 @@
   },
   "homepage": "https://github.com/buttercup/dropbox-client#readme",
   "dependencies": {
-    "cross-fetch": "^3.1.5",
+    "@buttercup/fetch": "^0.1.0",
     "hot-patcher": "^2.0.0",
     "layerr": "^1.0.0",
+    "node-fetch": "^3.3.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {

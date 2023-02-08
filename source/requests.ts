@@ -1,7 +1,8 @@
 import { HotPatcher } from "hot-patcher";
+import { Response } from "@buttercup/fetch";
 import { convertDropboxPathInfo, urlSafeJSONStringify } from "./convert.js";
 import { handleBadResponse, RequestConfig } from "./request.js";
-import { DropboxClientConfig, DropboxPathInfo } from "./types.js";
+import { DropboxClientConfig, DropboxItemResult, DropboxPathInfo } from "./types.js";
 
 const DELETE_URL = "https://api.dropboxapi.com/2/files/delete_v2";
 const DIRECTORY_CONTENTS_URL = "https://api.dropboxapi.com/2/files/list_folder";
@@ -124,7 +125,9 @@ export async function getDirectoryContents(
     };
     const response = await patcher.execute<Promise<Response>>("request", config);
     handleBadResponse(response);
-    const { entries } = await response.json();
+    const { entries } = await response.json() as {
+        entries: Array<DropboxItemResult>;
+    };
     return entries.map(convertDropboxPathInfo);
 }
 
@@ -201,7 +204,7 @@ export async function getMetadata(
     };
     const response = await patcher.execute<Promise<Response>>("request", config);
     handleBadResponse(response);
-    const payload = await response.json();
+    const payload = await response.json() as DropboxItemResult;
     return convertDropboxPathInfo(payload);
 }
 

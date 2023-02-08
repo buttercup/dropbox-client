@@ -1,4 +1,4 @@
-import fetch from "cross-fetch";
+import { Response, fetch } from "@buttercup/fetch";
 import URL from "url-parse";
 import _Layerr from "layerr";
 import { Headers } from "./types";
