@@ -7,7 +7,7 @@
 
 Dropbox is an integral part of the Buttercup platform as it's used by a huge amount of users to store all kinds of data - including Buttercup vault files. Having a functional, portable and reliable Dropbox client interface is critical to the platform's stability, and currently the official Dropbox SDK is lacking in terms of quality and stability.
 
-This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses `fetch` ([cross-fetch](https://github.com/lquixada/cross-fetch)) to perform requests, which will obviously work in a reproducible fassion across environments.
+This library is a barebones HTTP client that makes requests directly to Dropbox's HTTP API using a token (handled externally - this library will not be responsible for fetching them). The result is a tiny, portable script that is reliable and simple to understand. It uses `fetch` ([@buttercup/fetch](https://github.com/buttercup/fetch)) to perform requests, which will obviously work in a reproducible fassion across environments.
 
 ## Installation
 
