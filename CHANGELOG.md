@@ -1,5 +1,11 @@
 # Dropbox Client changelog
 
+## v2.1.1
+_2023-04-24_
+
+ * **Bugfix**:
+   * "Illegal invocation" error thrown when used in browser (fetch)
+
 ## v2.1.0
 _2023-02-08_
 
