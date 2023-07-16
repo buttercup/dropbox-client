@@ -1,5 +1,10 @@
 # Dropbox Client changelog
 
+## v2.1.2
+_2023-07-16_
+
+ * React-native entry point in `package.json`
+
 ## v2.1.1
 _2023-04-24_
 
