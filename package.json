@@ -31,21 +31,21 @@
   },
   "homepage": "https://github.com/buttercup/dropbox-client#readme",
   "dependencies": {
-    "@buttercup/fetch": "^0.1.1",
-    "hot-patcher": "^2.0.0",
-    "layerr": "^1.0.0",
-    "node-fetch": "^3.3.0",
+    "@buttercup/fetch": "^0.2.1",
+    "hot-patcher": "^2.0.1",
+    "layerr": "^2.0.1",
+    "node-fetch": "^3.3.2",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
-    "@types/node": "^18.11.17",
-    "chai": "^4.3.7",
+    "@types/node": "^20.9.0",
+    "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
     "mocha": "^10.2.0",
     "nested-property": "^4.0.0",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "sinon": "^15.0.1",
-    "typescript": "^4.9.4"
+    "sinon": "^17.0.1",
+    "typescript": "^5.2.2"
   }
 }

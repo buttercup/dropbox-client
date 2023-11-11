@@ -1,9 +1,7 @@
 import { expect } from "chai";
 import sinon from "sinon";
-import _Layerr from "layerr";
+import { Layerr } from "layerr";
 import { DropboxClient } from "../../dist/client.js";
-
-const { Layerr } = _Layerr;
 
 const TOKEN = "abc123";
 
