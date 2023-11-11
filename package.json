@@ -1,6 +1,6 @@
 {
   "name": "@buttercup/dropbox-client",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Dropbox client library",
   "exports": "./dist/index.js",
   "react-native": "./dist/index.js",
